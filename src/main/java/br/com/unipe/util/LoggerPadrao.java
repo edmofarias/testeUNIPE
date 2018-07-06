@@ -21,7 +21,6 @@ public class LoggerPadrao {
 	
 	public static void info(String mensagem, Object ... args){
 		logInfo.info(mensagem, args);
-		Sentry.capture(args[0]);
 	}
 	
 	public static void info(String mensagem){
@@ -43,6 +42,7 @@ public class LoggerPadrao {
 
 	public static void error(String mensagem, Exception e) {
 		logErro.error(mensagem, e);
+		Sentry.capture(e);
 	}
 
 	public static void error(String string) {
