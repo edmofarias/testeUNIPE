@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import br.com.unipe.domain.Example;
+import io.sentry.Sentry;
 
 @Service
 public class ExampleService {
@@ -18,8 +19,9 @@ public class ExampleService {
 			lista.add(example);
 			return example;
 		}
-		
-		throw new Exception("Example com nome " + example.getNome() + " já existe");
+		String mensagem = "Example com nome " + example.getNome() + " já existe";
+		Sentry.capture(mensagem);
+		throw new Exception(mensagem);
 	}
 	
 	private boolean containsName(String name){

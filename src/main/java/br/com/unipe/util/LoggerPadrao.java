@@ -3,6 +3,7 @@ package br.com.unipe.util;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import io.sentry.Sentry;
 
 public class LoggerPadrao {
 	
@@ -12,8 +13,15 @@ public class LoggerPadrao {
 	private static Logger logDebug = LoggerFactory.getLogger("depuracao");
 	private static Logger logTransacao = LoggerFactory.getLogger("transacao");
 
+	static {
+		Sentry.init();
+        String dsn = "https://d44f49170df549fc9616613dc40aa0a6@sentry.io/1238322";
+        Sentry.init(dsn);
+	}
+	
 	public static void info(String mensagem, Object ... args){
 		logInfo.info(mensagem, args);
+		Sentry.capture(mensagem);
 	}
 	
 	public static void info(String mensagem){
