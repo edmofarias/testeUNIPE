@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import br.com.hermes.hermeswp.util.LoggerPadrao;
 import br.com.unipe.domain.Example;
 import io.sentry.Sentry;
 
@@ -56,7 +57,7 @@ public class ExampleService {
 				throw new Exception("Não existe Example com nome " + nome);
 			}
 		} catch (Exception e) {
-			Sentry.capture(e);
+			LoggerPadrao.error(e.getMessage(), e);
 		}
 	}
 	
