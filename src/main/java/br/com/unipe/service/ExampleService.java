@@ -5,9 +5,8 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import br.com.hermes.hermeswp.util.LoggerPadrao;
 import br.com.unipe.domain.Example;
-import io.sentry.Sentry;
+import br.com.unipe.util.LoggerPadrao;
 
 @Service
 public class ExampleService {
@@ -15,14 +14,18 @@ public class ExampleService {
 	private List<Example> lista = new ArrayList<Example>();
 
 	public Example cadastrar(Example example) throws Exception {
-		
-		if(!containsName(example.getNome())) {
-			lista.add(example);
-			return example;
+		try {
+			if(!containsName(example.getNome())) {
+				lista.add(example);
+				return example;
+			}
+	
+			throw new Exception("Nome " + example.getNome() + " já existe");
+		} catch (Exception e) {
+			LoggerPadrao.error(e.getMessage(), e);
 		}
-		String mensagem = "Example com nome " + example.getNome() + " já existe";
-		Sentry.capture(mensagem);
-		throw new Exception(mensagem);
+		
+		return null;
 	}
 	
 	private boolean containsName(String name){
@@ -30,15 +33,23 @@ public class ExampleService {
 	}
 	
 	public List<Example> listar() {
+		LoggerPadrao.info("Listagem solicitada!");
 		return lista;
 	}
 	
 	public Example pesquisar(String nome) {
-		for (Example example : lista) {
-			if(nome.equals(example.getNome())) {
-				return example;
+		try {
+			for (Example example : lista) {
+				if(nome.equals(example.getNome())) {
+					return example;
+				}
 			}
+			
+			throw new Exception("Nome " + nome + " não existe");
+		} catch (Exception e) {
+			LoggerPadrao.error(e.getMessage(), e);
 		}
+		
 		return null;
 	}
 	

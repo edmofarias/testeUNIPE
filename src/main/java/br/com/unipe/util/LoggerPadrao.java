@@ -24,6 +24,7 @@ public class LoggerPadrao {
 	}
 	
 	public static void info(String mensagem){
+		Sentry.capture(mensagem);
 		logInfo.info(mensagem);
 	}
 	
