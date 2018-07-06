@@ -42,17 +42,21 @@ public class ExampleService {
 	}
 	
 	public void delete(String nome) throws Exception {
-		boolean del = false;
-		
-		for (int i = 0; i < lista.size(); i++) {
-			if(nome.equals(lista.get(i).getNome())) {
-				lista.remove(i);
-				del = true;
+		try {
+			boolean del = false;
+			
+			for (int i = 0; i < lista.size(); i++) {
+				if(nome.equals(lista.get(i).getNome())) {
+					lista.remove(i);
+					del = true;
+				}
 			}
-		}
-		
-		if(!del) {
-			throw new Exception("Não existe Example com nome " + nome);
+			
+			if(!del) {
+				throw new Exception("Não existe Example com nome " + nome);
+			}
+		} catch (Exception e) {
+			Sentry.capture(e);
 		}
 	}
 	
